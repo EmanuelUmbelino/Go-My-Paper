@@ -16,7 +16,9 @@ public class EnemyMovement : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        this.transform.Translate(new Vector3(0, (-50/height) * Time.deltaTime, 0));
+        this.transform.Translate(new Vector3(0, (-70/height) * Time.deltaTime, 0));
+        if (this.transform.position.z < -50)
+            Destroy(this.gameObject);
 	
 	}
 }

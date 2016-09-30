@@ -23,6 +23,6 @@ public class SpawnCubes : MonoBehaviour {
 	void Spawn () {
         Vector3 posEnemy = new Vector3(this.transform.position.x + Random.Range(-ds, ds), this.transform.position.y + Random.Range(-ds, ds), this.transform.position.z);
         GameObject enemy = (GameObject) GameObject.Instantiate(enemyPrefab, posEnemy, enemyPrefab.transform.rotation);
-        Invoke("Spawn", Random.Range(0.1f, 4));
+        Invoke("Spawn", Random.Range(1, 200)/100);
     }
 }
