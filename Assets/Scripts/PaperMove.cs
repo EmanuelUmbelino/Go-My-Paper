@@ -1,26 +1,63 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class PaperMove : MonoBehaviour
 {
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-    // Update is called once per frame
-    void Update ()
+    public float minSwipeDistY;
+
+    public float minSwipeDistX;
+
+    private Vector2 startPos;
+
+
+    [SerializeField]
+    private float acelerationV;
+    [SerializeField]
+    private float decelerationV;
+    private float speedX;
+    private float speedY;
+
+    void Update()
     {
-        int fingerCount = 0;
-        foreach (Touch touch in Input.touches)
+        SpeedUp();
+        transform.Translate(new Vector2(speedX, speedY));
+        speedX = deceleration(speedX); speedY = deceleration(speedY);
+    }
+
+    void SpeedUp()
+    {
+        if (Input.GetAxis("Vertical") > 0)
         {
-            if (touch.phase != TouchPhase.Ended && touch.phase != TouchPhase.Canceled)
-                fingerCount++;
+            speedY += acelerationV * Time.deltaTime;
 
         }
-        if (fingerCount > 0)
-            print("User has " + fingerCount + " finger(s) touching the screen");
-        if (Input.GetButtonDown("Fire1"))
-            this.GetComponent<Rigidbody>().AddForce(Vector3.up*50);
+        if (Input.GetAxis("Vertical") < 0)
+        {
+            speedY -= acelerationV * Time.deltaTime;
+        }
+        if (Input.GetAxis("Horizontal") > 0)
+        {
+            speedX += acelerationV * Time.deltaTime;
+        }
+        if (Input.GetAxis("Horizontal") < 0)
+        {
+            speedX -= acelerationV * Time.deltaTime;
+        }
+    }
+    float deceleration(float axis)
+    {
+        if (axis != 0)
+        {
+            if (axis > 0)
+                axis -= decelerationV * Time.deltaTime;
+            if (axis < 0)
+                axis += decelerationV * Time.deltaTime;
+        }
+        if (axis > -0.001f && axis < 0.001f)
+            axis = 0;
+
+        return axis;
     }
 }
